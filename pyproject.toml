@@ -1,3 +1,39 @@
+[project]
+name = "matrix-synapse"
+version = "1.141.0"
+description = "Homeserver for the Matrix decentralised comms protocol"
+readme = "README.rst"
+authors = [
+    { name = "Matrix.org Team and Contributors", email = "packages@matrix.org" }
+]
+requires-python = ">=3.10.0,<4.0.0"
+license-expression = "AGPL-3.0-or-later OR LicenseRef-Element-Commercial"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Topic :: Communications :: Chat",
+]
+
+[project.urls]
+repository = "https://github.com/element-hq/synapse"
+documentation = "https://element-hq.github.io/synapse/latest"
+"Issue Tracker" = "https://github.com/element-hq/synapse/issues"
+
+[project.scripts]
+synapse_homeserver = "synapse.app.homeserver:main"
+synapse_worker = "synapse.app.generic_worker:main"
+synctl = "synapse._scripts.synctl:main"
+
+export_signing_key = "synapse._scripts.export_signing_key:main"
+generate_config = "synapse._scripts.generate_config:main"
+generate_log_config = "synapse._scripts.generate_log_config:main"
+generate_signing_key = "synapse._scripts.generate_signing_key:main"
+hash_password = "synapse._scripts.hash_password:main"
+register_new_matrix_user = "synapse._scripts.register_new_matrix_user:main"
+synapse_port_db = "synapse._scripts.synapse_port_db:main"
+synapse_review_recent_signups = "synapse._scripts.review_recent_signups:main"
+update_synapse_database = "synapse._scripts.update_synapse_database:main"
+
+
 [tool.towncrier]
     package = "synapse"
     filename = "CHANGES.md"
@@ -106,19 +142,8 @@ manifest-path = "rust/Cargo.toml"
 module-name = "synapse.synapse_rust"
 
 [tool.poetry]
-name = "matrix-synapse"
-version = "1.141.0"
-description = "Homeserver for the Matrix decentralised comms protocol"
-authors = ["Matrix.org Team and Contributors <packages@matrix.org>"]
-license = "AGPL-3.0-or-later OR LicenseRef-Element-Commercial"
-readme = "README.rst"
-repository = "https://github.com/element-hq/synapse"
 packages = [
     { include = "synapse" },
-]
-classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Topic :: Communications :: Chat",
 ]
 include = [
     { path = "AUTHORS.rst", format = "sdist" },
@@ -149,28 +174,15 @@ exclude = [
 script = "build_rust.py"
 generate-setup-file = true
 
-[tool.poetry.scripts]
-synapse_homeserver = "synapse.app.homeserver:main"
-synapse_worker = "synapse.app.generic_worker:main"
-synctl = "synapse._scripts.synctl:main"
-
-export_signing_key = "synapse._scripts.export_signing_key:main"
-generate_config = "synapse._scripts.generate_config:main"
-generate_log_config = "synapse._scripts.generate_log_config:main"
-generate_signing_key = "synapse._scripts.generate_signing_key:main"
-hash_password = "synapse._scripts.hash_password:main"
-register_new_matrix_user = "synapse._scripts.register_new_matrix_user:main"
-synapse_port_db = "synapse._scripts.synapse_port_db:main"
-synapse_review_recent_signups = "synapse._scripts.review_recent_signups:main"
-update_synapse_database = "synapse._scripts.update_synapse_database:main"
-
 [tool.poetry.dependencies]
-python = "^3.10.0"
-
 # Mandatory Dependencies
 # ----------------------
 # we use the TYPE_CHECKER.redefine method added in jsonschema 3.0.0
 jsonschema = ">=3.0.0"
+# 0.25.0 is the first version to support Python 3.14.
+# We can remove this once https://github.com/python-jsonschema/jsonschema/issues/1426 is fixed
+# and included in a release.
+rpds-py = ">=0.25.0"
 # We choose 2.0 as a lower bound: the most recent backwards incompatible release.
 # It seems generally available, judging by https://pkgs.org/search/?q=immutabledict
 immutabledict = ">=2.0"
@@ -382,7 +394,7 @@ tomli = ">=1.2.3"
 # runtime errors caused by build system changes.
 # We are happy to raise these upper bounds upon request,
 # provided we check that it's safe to do so (i.e. that CI passes).
-requires = ["poetry-core>=1.1.0,<=2.1.3", "setuptools_rust>=1.3,<=1.11.1"]
+requires = ["poetry-core>=1.1.0,<=2.2.0", "setuptools_rust>=1.3,<=1.11.1"]
 build-backend = "poetry.core.masonry.api"
 
 
